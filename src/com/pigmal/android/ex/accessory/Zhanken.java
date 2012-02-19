@@ -6,7 +6,7 @@ public class Zhanken {
     private ZhankenListener mListener;
     private ADKCommandSender mSender;
     
-    enum Command {
+    public enum Command {
         gu,
         choki,
         par

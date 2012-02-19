@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.pigmal.android.accessory.AccessoryBaseActivity;
 import com.pigmal.android.ex.accessory.Game.GameMode;
+import com.pigmal.android.ex.accessory.Zhanken.Command;
 
 public class SimpleDemoKit extends AccessoryBaseActivity implements OnClickListener {
 	private static final String TAG = "SimpleDemokit";
@@ -90,6 +91,11 @@ public class SimpleDemoKit extends AccessoryBaseActivity implements OnClickListe
 		mOutputController = new OutputController(this, mOpenAccessory);
 		mInputController = new InputController(this);
 		mGame = new Game(new ADKCommandSender(mOpenAccessory), mReceiver);
+		
+		// test command
+		//mGame.setGameMode(GameMode.zyanken);
+		//mGame.setEnemyZyankenCommand(Command.choki);
+		// test command
 		
 		mReceiver.setInputController(mInputController);
 	}

@@ -8,7 +8,7 @@ public class Game {
     Zhanken mZhanken;
     AcchimuiteHoi mAcchi;
 
-    enum GameMode {
+    public enum GameMode {
         start,
         zyanken,
         acchimuite_hoi,

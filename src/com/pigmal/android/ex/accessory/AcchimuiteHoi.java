@@ -6,7 +6,7 @@ public class AcchimuiteHoi {
     private AcchimuiteHoiListener mListener;
     private ADKCommandSender mSender;
     
-    enum Direction {
+    public enum Direction {
         right,
         left,
         center,
