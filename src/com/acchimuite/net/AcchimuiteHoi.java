@@ -11,9 +11,10 @@ import net.arnx.jsonic.JSON;
 import android.os.AsyncTask;
 
 public class AcchimuiteHoi {
-	private final String apiUri = "http://";
+	private final String apiUri = "http://janjackjanson.appspot.com/";
 	private int sessionId;
 	private JankenDto jsonResult;
+	private boolean con;
 	
 	/**
 	 * つなぎに行くよ
@@ -21,14 +22,16 @@ public class AcchimuiteHoi {
 	 * @param userId
 	 * @return visitorName
 	 */
-	public String sessionOpen(String userName, int userId) {
+	public String openSession(String userName, int userId) {
 		StringBuffer uri = new StringBuffer(apiUri);
 		uri.append("?command=").append("sessionOpen");
 		uri.append("&userName=").append(userName);
 		uri.append("&userId=").append(userId);
 		JankenTask task = new JankenTask();
 		do {
+			con = true;
 			task.execute(uri.toString());
+			sleep();
 		} while(!isResultOk());
 		sessionId = jsonResult.getSessionId();
 		return jsonResult.getVisitorName();
@@ -46,7 +49,9 @@ public class AcchimuiteHoi {
 		uri.append("&shoot=").append(shoot);
 		JankenTask task = new JankenTask();
 		do {
+			con = true;
 			task.execute(uri.toString());
+			sleep();
 		} while(!isResultOk());
 		return pollResult();
 	}
@@ -56,15 +61,40 @@ public class AcchimuiteHoi {
 	 * @param direction
 	 * @return
 	 */
-	public int pollResult() {
+	private int pollResult() {
 		StringBuffer uri = new StringBuffer(apiUri);
 		uri.append("?command=").append("pollRequest");
 		uri.append("&sessionId=").append(sessionId);
 		JankenTask task = new JankenTask();
 		do {
+			con = true;
 			task.execute(uri.toString());
+			sleep();
 		} while(!isResultOk());
 		return jsonResult.getShotted();
+	}
+	
+	/**
+	 * セッションを閉じる
+	 * @return
+	 */
+	public boolean closeSession() {
+		StringBuffer uri = new StringBuffer(apiUri);
+		uri.append("?command=").append("closeSession");
+		uri.append("&sessionId=").append(sessionId);
+		JankenTask task = new JankenTask();
+		task.execute(uri.toString());
+		return jsonResult.getStatus().equals("true");
+	}
+	
+	private void sleep() {
+		while (con) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	/**
@@ -74,9 +104,7 @@ public class AcchimuiteHoi {
 	private boolean isResultOk() {
 		boolean flg = false;
 		if (jsonResult != null) {
-			if (jsonResult.getAccept() == "true") {
-				flg = true;
-			}
+			flg = jsonResult.isSuccess();
 		}
 		return flg;
 	}
@@ -109,12 +137,18 @@ public class AcchimuiteHoi {
 		
 		@Override
 		protected void onPostExecute(String result) {
+			con = false;
 			if (result != null) {
 				jsonResult = JSON.decode(result, JankenDto.class);
 			}
 		}
 	}
 	
+	/**
+	 * JSONの結果を保持するクラス
+	 * @author ttymsd
+	 *
+	 */
 	class JankenDto {
 		private String visitorName;
 		private int sessionId;
@@ -122,7 +156,7 @@ public class AcchimuiteHoi {
 		private String result;
 		private String status;
 		private int shotted;
-		private String accept;
+		private boolean success;
 		
 		public String getVisitorName() {
 			return visitorName;
@@ -160,11 +194,11 @@ public class AcchimuiteHoi {
 		public void setShotted(int shotted) {
 			this.shotted = shotted;
 		}
-		public String getAccept() {
-			return accept;
+		public boolean isSuccess() {
+			return success;
 		}
-		public void setAccept(String accept) {
-			this.accept = accept;
+		public void setSuccess(boolean success) {
+			this.success = success;
 		}
 	}
 }
