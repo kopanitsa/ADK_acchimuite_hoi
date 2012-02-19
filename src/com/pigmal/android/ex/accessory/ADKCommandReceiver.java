@@ -45,6 +45,7 @@ public class ADKCommandReceiver implements AccessoryListener {
 	private static final int MESSAGE_JOY = 4;
 
 	private InputController mInputController;
+	private Game mGame;
 	
 	protected class SwitchMsg {
 		private byte sw;
@@ -170,6 +171,7 @@ public class ADKCommandReceiver implements AccessoryListener {
 				mInputController
 						.joystickButtonSwitchStateChanged(o.getState() != 0);
 			}
+			mGame.switchStateChanged(sw, o.getState() != 0);
 		}
 	}
 
@@ -181,12 +183,21 @@ public class ADKCommandReceiver implements AccessoryListener {
 	public void setInputController(InputController controller) {
 		mInputController = controller;
 	}
+	
+	public void setGame(Game game){
+	    mGame = game;
+	}
+	
 	/**
 	 * Disconnect input controller then stop to display
 	 */
 	public void removeInputController() {
 		mInputController = null;		
 	}
+    
+    public void removeGame(Game game){
+        mGame = null;
+    }
 
 	@Override
 	public void onAccessoryMessage(byte[] buffer) {
