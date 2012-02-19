@@ -15,7 +15,7 @@ public class Game {
         celemony, // win or lose
     };
     
-    Game(ADKCommandSender sender, ADKCommandReceiver receiver){
+    public Game(ADKCommandSender sender, ADKCommandReceiver receiver){
         mGameMode = GameMode.start;
         mZhanken = new Zhanken(sender);
         mAcchi = new AcchimuiteHoi(sender);
@@ -49,6 +49,14 @@ public class Game {
             mAcchi.setSwitchStateChanged(sw, b);
             break;
         }
+    }
+    
+    public void setEnemyZyankenCommand(Zhanken.Command command){
+        mZhanken.setEnemyCommand(command);
+    }
+    
+    public void setEnemyAcchimuiteHoiDirection(AcchimuiteHoi.Direction direction){
+        mAcchi.setEnemyDirection(direction);
     }
     
     public void setAcchimuiteHoiListener(AcchimuiteHoiListener listener){

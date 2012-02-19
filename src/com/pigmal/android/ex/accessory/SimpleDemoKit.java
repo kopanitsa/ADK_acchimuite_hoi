@@ -27,11 +27,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pigmal.android.accessory.AccessoryBaseActivity;
+import com.pigmal.android.ex.accessory.Game.GameMode;
 
 public class SimpleDemoKit extends AccessoryBaseActivity implements OnClickListener {
 	private static final String TAG = "SimpleDemokit";
 	
 	private ADKCommandReceiver mReceiver;
+	private Game mGame;
 	
 	private TextView inputLabel;
 	private TextView outputLabel;
@@ -87,6 +89,8 @@ public class SimpleDemoKit extends AccessoryBaseActivity implements OnClickListe
 		
 		mOutputController = new OutputController(this, mOpenAccessory);
 		mInputController = new InputController(this);
+		mGame = new Game(new ADKCommandSender(mOpenAccessory), mReceiver);
+		
 		mReceiver.setInputController(mInputController);
 	}
 
