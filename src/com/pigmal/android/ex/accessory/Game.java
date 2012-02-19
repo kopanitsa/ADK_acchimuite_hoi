@@ -7,6 +7,7 @@ public class Game {
     GameMode mGameMode;
     Zhanken mZhanken;
     AcchimuiteHoi mAcchi;
+    ADKCommandSender mSender;
 
     public enum GameMode {
         start,
@@ -14,6 +15,11 @@ public class Game {
         acchimuite_hoi,
         celemony, // win or lose
     };
+    
+    public enum Player {
+        you,
+        enemy
+    }
     
     public Game(ADKCommandSender sender, ADKCommandReceiver receiver){
         mGameMode = GameMode.start;
@@ -26,7 +32,7 @@ public class Game {
         mGameMode = mode;
         switch (mode) {
         case start:
-            // TODO flash LED
+            startEffect();
             break;
         case acchimuite_hoi:
             // nothing to do
@@ -38,6 +44,10 @@ public class Game {
             // TODO flash LED
             break;
         }
+    }
+    
+    private void startEffect(){
+        
     }
 
     public void switchStateChanged(byte sw, boolean b) {
@@ -55,8 +65,10 @@ public class Game {
         mZhanken.setEnemyCommand(command);
     }
     
-    public void setEnemyAcchimuiteHoiDirection(AcchimuiteHoi.Direction direction){
-        mAcchi.setEnemyDirection(direction);
+    // 0: move face (User wins)
+    // 1: move finger (Enemy wins)
+    public void setEnemyAcchimuiteHoiDirection(int status, AcchimuiteHoi.Direction direction){
+        mAcchi.setEnemyDirection(status, direction);
     }
     
     public void setAcchimuiteHoiListener(AcchimuiteHoiListener listener){
@@ -66,13 +78,22 @@ public class Game {
     public void setZhankenListener(ZhankenListener listener){
         mZhanken.setZhankenListener(listener);
     }
+    
+    public void setWinner(Player player){
+        // TODO
+    }
+    
+    public void clear(){
+        mZhanken.clear();
+        mAcchi.clear();
+    }
 
     public interface AcchimuiteHoiListener {
         public void onAcchimuiteHoiSet(Direction direction);
     }
 
     public interface ZhankenListener {
-        public Command onCommandSet(Command command);
+        public Command onCommandSet(Command command); // FIXME should return void
     }
 
 }

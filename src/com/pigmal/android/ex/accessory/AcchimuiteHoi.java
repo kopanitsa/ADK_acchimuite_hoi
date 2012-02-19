@@ -16,17 +16,18 @@ public class AcchimuiteHoi {
         mSender = sender;
     }
     
-    public void setEnemyDirection(Direction direction){
+    // 0: move face (User wins)
+    // 1: move finger (Enemy wins)
+    public void setEnemyDirection(int status, Direction direction){
         switch (direction){
-        // TODO confirm direction is right
         case right:
-            mSender.sendServoCommand(0, 180);
+            mSender.sendServoCommand(status, 0);
             break;
         case left:
-            mSender.sendServoCommand(0, 0);
+            mSender.sendServoCommand(status, 180);
             break;
         case center:
-            mSender.sendServoCommand(0, 90);
+            mSender.sendServoCommand(status, 90);
             break;
         }
     }
@@ -43,5 +44,10 @@ public class AcchimuiteHoi {
                 mListener.onAcchimuiteHoiSet(Direction.right);
             }
         }
+    }
+
+    public void clear() {
+        mSender.sendServoCommand(0, 90);
+        mSender.sendServoCommand(1, 90);
     }
 }

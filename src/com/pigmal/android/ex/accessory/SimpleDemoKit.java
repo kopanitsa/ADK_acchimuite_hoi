@@ -27,8 +27,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pigmal.android.accessory.AccessoryBaseActivity;
+import com.pigmal.android.ex.accessory.AcchimuiteHoi.Direction;
 import com.pigmal.android.ex.accessory.Game.GameMode;
-import com.pigmal.android.ex.accessory.Zhanken.Command;
 
 public class SimpleDemoKit extends AccessoryBaseActivity implements OnClickListener {
 	private static final String TAG = "SimpleDemokit";
@@ -92,10 +92,26 @@ public class SimpleDemoKit extends AccessoryBaseActivity implements OnClickListe
 		mInputController = new InputController(this);
 		mGame = new Game(new ADKCommandSender(mOpenAccessory), mReceiver);
 		
-		// test command
-		//mGame.setGameMode(GameMode.zyanken);
-		//mGame.setEnemyZyankenCommand(Command.choki);
-		// test command
+		// test command-----------------
+//      // ---------------------
+//		mGame.setGameMode(GameMode.celemony);
+//		mGame.setWinner(Player.you);
+//      // ---------------------
+//		mGame.setGameMode(GameMode.acchimuite_hoi);
+//		mGame.setEnemyAcchimuiteHoiDirection(0, Direction.right);
+//		mGame.setGameMode(GameMode.acchimuite_hoi);
+//		mGame.setEnemyAcchimuiteHoiDirection(1, Direction.left);
+//      // ---------------------
+//      mGame.setGameMode(GameMode.zyanken);
+//      mGame.setEnemyZyankenCommand(Command.choki);
+//      mGame.setZhankenListener(new ZhankenListener() {
+//        @Override
+//        public Command onCommandSet(Command command) {
+//            Log.e(TAG,"######################## get command:"+command);
+//            return command;
+//        }
+//    });
+        // test command-----------------
 		
 		mReceiver.setInputController(mInputController);
 	}
